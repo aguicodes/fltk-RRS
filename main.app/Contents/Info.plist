@@ -4,11 +4,11 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleExecutable</key>
-	<string>helloworld</string>
+	<string>main</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.fltk.helloworld</string>
+	<string>org.fltk.main</string>
 	<key>CFBundleName</key>
-	<string>helloworld</string>
+	<string>main</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>NSHighResolutionCapable</key>
