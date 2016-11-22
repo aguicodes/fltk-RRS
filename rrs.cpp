@@ -44,6 +44,9 @@ struct customer;
 struct models;
 struct orders;
 
+int found = 0;
+
+
 vector<arm> armParts;
 vector<head> headParts;
 vector<torso> torsoParts;
@@ -90,13 +93,9 @@ void view_orders();
 void view_current();
 
 string cust;
-string phone;
-string email;
-string num;
 string quan;
 
-string model;
-string ID;
+string cmodel;
 
 string carm;
 string armP;
@@ -1025,6 +1024,7 @@ void create_robot_custCB(Fl_Widget* w, void* p){
     }
 
     else{
+        found = 1;
         double price = 0, quantity = 0;
         
         string s = "";
@@ -1032,11 +1032,11 @@ void create_robot_custCB(Fl_Widget* w, void* p){
         filee << "Customer name: " << robot_cust_dlg->name() << ",";
         cust = robot_cust_dlg->name();
         filee << "Telephone #: " << robot_cust_dlg->telePhone() << ",";
-        phone = robot_cust_dlg->telePhone();
+
         filee << "Email: " << robot_cust_dlg->email() << ",";
-        email = robot_cust_dlg->email();
+    
         filee << "Robot Model #: " << robot_cust_dlg->mod() << ",";
-        num = robot_cust_dlg->mod();
+
         filee << "Quantity: " << robot_cust_dlg->quan() << ",";
         quan = robot_cust_dlg->quan();
 
@@ -1046,16 +1046,15 @@ void create_robot_custCB(Fl_Widget* w, void* p){
         
         quantity = atof(s.c_str());
 
-        cout << robot_cust_dlg->mod() << " model___ " << endl;
         
         for(int i = 0; i < rModels.size(); i++){
-            cout << "stored models: " << rModels[i].ID << endl;
+
             if((rModels[i].ID) == (robot_cust_dlg->mod() )){
         
                 filee << rModels[i].name << ",";
-                model = rModels[i].name;
-                filee << "Model #: " << rModels[i].ID << ",";
-                ID = rModels[i].ID;
+                cmodel = rModels[i].name;
+                filee << rModels[i].ID << ",";
+            
          
                 filee << rModels[i].arm << ",";
                 carm = rModels[i].arm;
@@ -1065,7 +1064,7 @@ void create_robot_custCB(Fl_Widget* w, void* p){
                 armPow = rModels[i].armPow;
                 filee << rModels[i].armW << ",";
                 armW = rModels[i].armW;
-                filee << "Cost: " << rModels[i].armC << ",";
+                filee << rModels[i].armC << ",";
                 armC = rModels[i].armC;
                 filee << rModels[i].armD << ",";
                 armD = rModels[i].armD;
@@ -1076,7 +1075,7 @@ void create_robot_custCB(Fl_Widget* w, void* p){
                 headP = rModels[i].headP;
                 filee << rModels[i].headW << ",";
                 headW = rModels[i].headW;
-                filee << "Cost: " << rModels[i].headC << ",";
+                filee << rModels[i].headC << ",";
                 headC = rModels[i].headC;
                 filee << rModels[i].headD << ",";
                 headD = rModels[i].headD;
@@ -1091,7 +1090,7 @@ void create_robot_custCB(Fl_Widget* w, void* p){
                 locoS = rModels[i].locoS;
                 filee << rModels[i].locoW << ",";
                 locoW = rModels[i].locoW;
-                filee << "Cost: " << rModels[i].locoC << ",";
+                filee << rModels[i].locoC << ",";
                 locoC = rModels[i].locoC;
                 filee << rModels[i].locoD << ",";
                 locoD = rModels[i].locoD;
@@ -1104,7 +1103,7 @@ void create_robot_custCB(Fl_Widget* w, void* p){
                 torsoB = rModels[i].torsoB;
                 filee << rModels[i].torsoW << ",";
                 torsoW = rModels[i].torsoW;
-                filee << "Cost: " << rModels[i].torsoC << ",";
+                filee << rModels[i].torsoC << ",";
                 torsoC = rModels[i].torsoC;
                 filee << rModels[i].torsoD << ",";
                 torsoD = rModels[i].torsoD;
@@ -1117,7 +1116,7 @@ void create_robot_custCB(Fl_Widget* w, void* p){
                 battE = rModels[i].battE;
                 filee << rModels[i].battW << ",";
                 battW = rModels[i].battW;
-                filee << "Cost: " << rModels[i].battC << ",";
+                filee << rModels[i].battC << ",";
                 battC = rModels[i].battC;
                 filee << rModels[i].battD << ",";
                 battD = rModels[i].battD;
@@ -1156,8 +1155,7 @@ void create_robot_modelsCB(Fl_Widget* w, void* p){
     
     
     for(i = 0; i < armParts.size(); i++){
-        
-        cout << armParts[i].part << endl;
+   
         
         if ((armParts[i].part) == (robot_models_dlg->arm())){
             
@@ -1175,8 +1173,6 @@ void create_robot_modelsCB(Fl_Widget* w, void* p){
 
     for(i = 0; i < headParts.size(); i++){
         
-        cout << headParts[i].part << endl;
-        
         if ((headParts[i].part) == (robot_models_dlg->head())){
             
             file << headParts[i].name << ",";
@@ -1191,8 +1187,6 @@ void create_robot_modelsCB(Fl_Widget* w, void* p){
     headParts.clear();
 
     for(i = 0; i < torsoParts.size(); i++){
-        
-        cout << torsoParts[i].part << endl;
         
         if ((torsoParts[i].part) == (robot_models_dlg->torso())){
             
@@ -1210,9 +1204,7 @@ void create_robot_modelsCB(Fl_Widget* w, void* p){
 
 
     for(i = 0; i < locoParts.size(); i++){
-        
-        cout << locoParts[i].part << endl;
-        
+  
         if ((locoParts[i].part) == (robot_models_dlg->loco())){
             
             file << locoParts[i].name << ",";
@@ -1230,7 +1222,6 @@ void create_robot_modelsCB(Fl_Widget* w, void* p){
     
     for(i = 0; i < batteryParts.size(); i++){
         
-        cout << batteryParts[i].part << endl;
         
         if ((batteryParts[i].part) == (robot_models_dlg->battery())){
             
@@ -1456,10 +1447,10 @@ void view_parts(){
     oss << "#######ARM PARTS##############" << "\n";
     for(size_t i = 0; i < (armParts.size()-2); i++) {
         oss << armParts[i].name << "\n";
-        oss << armParts[i].part << "\n";
+        oss << "Part #: " << armParts[i].part << "\n";
         oss << armParts[i].power << "\n";
         oss << armParts[i].weight << "\n";
-        oss << armParts[i].cost << "\n";
+        oss << "Price: $" << armParts[i].cost << "\n";
         oss << armParts[i].description << "\n";
         oss << "\n";
     }
@@ -1468,9 +1459,9 @@ void view_parts(){
     oss << "\n#######HEAD PARTS###########" << "\n";
     for(size_t i = 0; i < (headParts.size()-2); i++) {
         oss << headParts[i].name << "\n";
-        oss << headParts[i].part << "\n";
+        oss << "Part #: " << headParts[i].part << "\n";
         oss << headParts[i].weight << "\n";
-        oss << headParts[i].cost << "\n";
+        oss << "Price: $" << headParts[i].cost << "\n";
         oss << headParts[i].description << "\n";
         oss << "\n";
     }
@@ -1479,10 +1470,10 @@ void view_parts(){
     oss << "\n#######TORSO PARTS##############" << "\n";
     for(size_t i = 0; i < (torsoParts.size()-2); i++) {
         oss << torsoParts[i].name << "\n";
-        oss << torsoParts[i].part << "\n";
+        oss << "Part #: " << torsoParts[i].part << "\n";
         oss << torsoParts[i].bAmount << "\n";
         oss << torsoParts[i].weight << "\n";
-        oss << torsoParts[i].cost << "\n";
+        oss << "Price: $" <<torsoParts[i].cost << "\n";
         oss << torsoParts[i].description << "\n";
         oss << "\n";
     }
@@ -1491,11 +1482,11 @@ void view_parts(){
     oss << "\n####LOCOMOTOR PARTS#####"<< "\n";
     for(size_t i = 0; i < (locoParts.size()-2); i++) {
         oss << locoParts[i].name << "\n";
-        oss << locoParts[i].part << "\n";
+        oss << "Part #: " << locoParts[i].part << "\n";
         oss << locoParts[i].power << "\n";
         oss << locoParts[i].speed << "\n";
         oss << locoParts[i].weight << "\n";
-        oss << locoParts[i].cost << "\n";
+        oss << "Price: $" <<locoParts[i].cost << "\n";
         oss << locoParts[i].description << "\n";
         oss << "\n";
     }
@@ -1504,10 +1495,10 @@ void view_parts(){
     oss << "\n#######BATTERY PARTS########" << "\n";
     for(size_t i = 0; i < (batteryParts.size()-2); i++) {
         oss << batteryParts[i].name << "\n";
-        oss << batteryParts[i].part << "\n";
+        oss << "Part #: " << batteryParts[i].part << "\n";
         oss << batteryParts[i].energy << "\n";
         oss << batteryParts[i].weight << "\n";
-        oss << batteryParts[i].cost << "\n";
+        oss << "Price: $" << batteryParts[i].cost << "\n";
         oss << batteryParts[i].description << "\n";
         oss << "\n";
     }
@@ -1707,7 +1698,6 @@ void store_employees(){
     
     file.open("salesAsoc.csv",ios::in);
     assert(!file.fail( ));
-    cout << "the count before: " << employees.size() << endl;
     while (!file.eof( )){
         getline(file, employees[index].name, ',');
         getline(file, employees[index].ID, ',');
@@ -1743,7 +1733,7 @@ void view_models(){
         osss << rModels[i].armP << "\n";
         osss << rModels[i].armPow << "\n";
         osss << rModels[i].armW << "\n";
-        osss << "Cost: " << rModels[i].armC << "\n";
+        osss << rModels[i].armC << "\n";
         osss << rModels[i].armD << "\n";
         osss << "\n";
         osss << "*************************\n";
@@ -1751,7 +1741,7 @@ void view_models(){
         osss << rModels[i].head << "\n";
         osss << rModels[i].headP << "\n";
         osss << rModels[i].headW << "\n";
-        osss << "Cost: " << rModels[i].headC << "\n";
+        osss << rModels[i].headC << "\n";
         osss << rModels[i].headD << "\n";
         osss << "\n";
         osss << "*************************\n";
@@ -1761,7 +1751,7 @@ void view_models(){
         osss << rModels[i].locoPow << "\n";
         osss << rModels[i].locoS << "\n";
         osss << rModels[i].locoW << "\n";
-        osss << "Cost: " << rModels[i].locoC << "\n";
+        osss << rModels[i].locoC << "\n";
         osss << rModels[i].locoD << "\n";
         osss << "\n";
         osss << "************************\n";
@@ -1770,7 +1760,7 @@ void view_models(){
         osss << rModels[i].torsoP << "\n";
         osss << rModels[i].torsoB << "\n";
         osss << rModels[i].torsoW << "\n";
-        osss << "Cost: " << rModels[i].torsoC << "\n";
+        osss << rModels[i].torsoC << "\n";
         osss << rModels[i].torsoD << "\n";
         osss << "\n";
         osss << "**************************\n";
@@ -1779,7 +1769,7 @@ void view_models(){
         osss << rModels[i].battP << "\n";
         osss << rModels[i].battE << "\n";
         osss << rModels[i].battW << "\n";
-        osss << "Cost: " << rModels[i].battC << "\n";
+        osss << rModels[i].battC << "\n";
         osss << rModels[i].battD << "\n";
         osss << "\n";
         osss << "*************************\n";
@@ -1886,13 +1876,6 @@ void store_orders(){
         getline(file, allOrders[index].headC, ',');
         getline(file, allOrders[index].headD, ',');
         
-        getline(file, allOrders[index].torso, ',');
-        getline(file, allOrders[index].torsoP, ',');
-        getline(file, allOrders[index].torsoB, ',');
-        getline(file, allOrders[index].torsoW, ',');
-        getline(file, allOrders[index].torsoC, ',');
-        getline(file, allOrders[index].torsoD, ',');
-        
         getline(file, allOrders[index].loco, ',');
         getline(file, allOrders[index].locoP, ',');
         getline(file, allOrders[index].locoPow, ',');
@@ -1900,6 +1883,13 @@ void store_orders(){
         getline(file, allOrders[index].locoW, ',');
         getline(file, allOrders[index].locoC, ',');
         getline(file, allOrders[index].locoD, ',');
+        
+        getline(file, allOrders[index].torso, ',');
+        getline(file, allOrders[index].torsoP, ',');
+        getline(file, allOrders[index].torsoB, ',');
+        getline(file, allOrders[index].torsoW, ',');
+        getline(file, allOrders[index].torsoC, ',');
+        getline(file, allOrders[index].torsoD, ',');
         
         getline(file, allOrders[index].batt, ',');
         getline(file, allOrders[index].battP, ',');
@@ -1948,7 +1938,7 @@ void view_orders(){
         osss << allOrders[i].armP << "\n";
         osss << allOrders[i].armPow << "\n";
         osss << allOrders[i].armW << "\n";
-        osss << "Cost: " << allOrders[i].armC << "\n";
+        osss << allOrders[i].armC << "\n";
         osss << allOrders[i].armD << "\n";
         osss << "\n";
         osss << "*************************\n";
@@ -1956,7 +1946,7 @@ void view_orders(){
         osss << allOrders[i].head << "\n";
         osss << allOrders[i].headP << "\n";
         osss << allOrders[i].headW << "\n";
-        osss << "Cost: " << allOrders[i].headC << "\n";
+        osss << allOrders[i].headC << "\n";
         osss << allOrders[i].headD << "\n";
         osss << "\n";
         osss << "*************************\n";
@@ -1966,7 +1956,7 @@ void view_orders(){
         osss << allOrders[i].locoPow << "\n";
         osss << allOrders[i].locoS << "\n";
         osss << allOrders[i].locoW << "\n";
-        osss << "Cost: " << allOrders[i].locoC << "\n";
+        osss << allOrders[i].locoC << "\n";
         osss << allOrders[i].locoD << "\n";
         osss << "\n";
         osss << "************************\n";
@@ -1975,7 +1965,7 @@ void view_orders(){
         osss << allOrders[i].torsoP << "\n";
         osss << allOrders[i].torsoB << "\n";
         osss << allOrders[i].torsoW << "\n";
-        osss << "Cost: " << allOrders[i].torsoC << "\n";
+        osss << allOrders[i].torsoC << "\n";
         osss << allOrders[i].torsoD << "\n";
         osss << "\n";
         osss << "**************************\n";
@@ -1984,7 +1974,7 @@ void view_orders(){
         osss << allOrders[i].battP << "\n";
         osss << allOrders[i].battE << "\n";
         osss << allOrders[i].battW << "\n";
-        osss << "Cost: " << allOrders[i].battC << "\n";
+        osss << allOrders[i].battC << "\n";
         osss << allOrders[i].battD << "\n";
         osss << "\n";
         osss << "*************************\n";
@@ -2012,55 +2002,63 @@ void view_current(){
     
     
     ostringstream osss;
-    //cout << cust << endl;
-    osss << cust << endl;
-    osss << phone << endl;
-    osss << email << endl;
-    osss << num << endl;
-    osss << quan << endl;
+    
+    if(found == 1){
+        osss << "Thank you very Much ";
+        osss << cust << "!, here are \nall the details:" <<endl;
+
+        osss << "\nYou bought " << quan << " Robots." <<endl;
 
     
-    osss << model << endl;
-    osss << ID << endl;
+        osss << cmodel << endl;
+        osss << "#######################\n";
+        osss << "Part Details: \n";
+        osss << carm << endl;
+        osss << armP << endl;
+        osss << armPow << endl;
+        osss << armW << endl;
+        osss << armC << endl;
+        osss << armD << endl;
+        osss << "\n";
+    
+        osss << chead << endl;
+        osss << headP << endl;
+        osss << headW << endl;
+        osss << headC << endl;
+        osss << headD << endl;
+        osss << "\n";
+    
+        osss << cloco << endl;
+        osss << locoP << endl;
+        osss << locoPow << endl;
+        osss << locoS << endl;
+        osss << locoW << endl;
+        osss << locoC << endl;
+        osss << locoD << endl;
+        osss << "\n";
 
-    
-    osss << carm << endl;
-    osss << armP << endl;
-    osss << armPow << endl;
-    osss << armW << endl;
-    osss << armC << endl;
-    osss << armD << endl;
-    
-    osss << chead << endl;
-    osss << headP << endl;
-    osss << headW << endl;
-    osss << headC << endl;
-    osss << headD << endl;
-    
-    osss << cloco << endl;
-    osss << locoP << endl;
-    osss << locoPow << endl;
-    osss << locoS << endl;
-    osss << locoW << endl;
-    osss << locoC << endl;
-    osss << locoD << endl;
 
-
-    osss << ctorso << endl;
-    osss << torsoP << endl;
-    osss << torsoB << endl;
-    osss << torsoW << endl;
-    osss << torsoC << endl;
-    osss << torsoD << endl;
+        osss << ctorso << endl;
+        osss << torsoP << endl;
+        osss << torsoB << endl;
+        osss << torsoW << endl;
+        osss << torsoC << endl;
+        osss << torsoD << endl;
+        osss << "\n";
     
-    osss << cbatt << endl;
-    osss << battP << endl;
-    osss << battE << endl;
-    osss << battW << endl;
-    osss << battC << endl;
-    osss << battD << endl;
-    
-    osss << cprice << endl;
+        osss << cbatt << endl;
+        osss << battP << endl;
+        osss << battE << endl;
+        osss << battW << endl;
+        osss << battC << endl;
+        osss << battD << endl;
+        osss << "######################\n";
+        osss << "TOTAL PRICE: " << cprice << endl;
+        osss << "######################\n";
+    }
+    else{
+        osss << "You havent created an order!, Go create one!";
+    }
 
     output->value(osss.str().c_str());
 
